@@ -34,9 +34,9 @@ public class ParseApplication extends ChatApplication {
         // clientKey is not needed unless explicitly configured
         // any network interceptors must be added with the Configuration Builder given this syntax
         Parse.initialize(new Parse.Configuration.Builder(this)
-                .applicationId("yw-yumspot") // should correspond to APP_ID env variable
-                .clientKey("091917")  // set explicitly unless clientKey is explicitly configured on Parse server
+                .applicationId("9EKmmEmfvTg0af9okZt4l8WJBL8n97GYngQzU6XW") // should correspond to APP_ID env variable
+                .clientKey("o3lE7zCa1p2rP5YzOvHKizXMx0eFybhRVnZJ2IY4")  // set explicitly unless clientKey is explicitly configured on Parse server
 //                .clientBuilder(builder)
-                .server("https://yumspot.herokuapp.com/parse/").build());
+                .server("https://parseapi.back4app.com/").build());
     }
 }
