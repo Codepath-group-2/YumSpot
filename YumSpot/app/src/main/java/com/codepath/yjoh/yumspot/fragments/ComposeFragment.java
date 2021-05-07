@@ -18,6 +18,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -144,13 +145,20 @@ public class ComposeFragment extends Fragment {
                     Toast.makeText(getContext(), "you created new post successfully", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                Toast.makeText(getContext(), "Please wait while we are saving your post", Toast.LENGTH_SHORT).show();
                 savePost(description, currentUser, photoFile);
-                Toast.makeText(getContext(), "you created new post successfully", Toast.LENGTH_SHORT).show();
-                PostsFragment posts = new PostsFragment();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.flContainer, posts)
-                        .addToBackStack(null)
-                        .commit();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        // Actions to do after 10 seconds
+                        PostsFragment posts = new PostsFragment();
+                        getActivity().getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.flContainer, posts)
+                                .addToBackStack(null)
+                                .commit();
+                        Toast.makeText(getContext(), "you created new post successfully", Toast.LENGTH_SHORT).show();
+                    }
+                }, 5000);
             }
         });
     }

@@ -37,6 +37,6 @@ public class ParseApplication extends ChatApplication {
                 .applicationId("9EKmmEmfvTg0af9okZt4l8WJBL8n97GYngQzU6XW") // should correspond to APP_ID env variable
                 .clientKey("o3lE7zCa1p2rP5YzOvHKizXMx0eFybhRVnZJ2IY4")  // set explicitly unless clientKey is explicitly configured on Parse server
 //                .clientBuilder(builder)
-                .server("https://parseapi.back4app.com/").build());
+                .server("https://yumspot.b4a.io/").build());
     }
 }

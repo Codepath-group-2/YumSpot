@@ -48,6 +48,11 @@ public class ChatActivity extends Fragment {
     EditText etMessage;
     Button btSend;
 
+    RecyclerView rvChat;
+    ArrayList<Message> mMessages;
+    ChatAdapter mAdapter;
+
+
     public ChatActivity() {
         // Required empty public constructor
     }
@@ -77,12 +82,26 @@ public class ChatActivity extends Fragment {
         btSend = (Button) view.findViewById(R.id.btSend);
         rvChat = (RecyclerView) view.findViewById(R.id.rvChat);
 
+
+
         // User login
         if (ParseUser.getCurrentUser() != null) { // start with existing user
             startWithCurrentUser();
         } else { // If not logged in, login as a new anonymous user
             login();
         }
+
+        mMessages = new ArrayList<>();
+//        mFirstLoad = true;
+        final String userId = ParseUser.getCurrentUser().getObjectId();
+        mAdapter = new ChatAdapter(getActivity(), userId, mMessages);
+        rvChat.setAdapter(mAdapter);
+
+        // associate the LayoutManager with the RecylcerView
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+        rvChat.setLayoutManager(linearLayoutManager);
 
         Message message = new Message();
         message.setUserId(ParseUser.getCurrentUser().getObjectId());
@@ -97,6 +116,7 @@ public class ChatActivity extends Fragment {
                                                 mMessages.clear();
                                                 mMessages.addAll(messages);
                                                 mAdapter.notifyDataSetChanged(); // update adapter
+                                                rvChat.scrollToPosition(0);
                                             }
                                         }
                                     });
@@ -148,9 +168,6 @@ public class ChatActivity extends Fragment {
     }
 
 
-    RecyclerView rvChat;
-    ArrayList<Message> mMessages;
-    ChatAdapter mAdapter;
     // Keep track of initial load to scroll to the bottom of the ListView
     boolean mFirstLoad;
 
@@ -160,16 +177,16 @@ public class ChatActivity extends Fragment {
 //        etMessage = (EditText) view.findViewById(R.id.etMessage);
 //        btSend = (Button) view.findViewById(R.id.btSend);
 //        rvChat = (RecyclerView) view.findViewById(R.id.rvChat);
-        mMessages = new ArrayList<>();
-        mFirstLoad = true;
-        final String userId = ParseUser.getCurrentUser().getObjectId();
-        mAdapter = new ChatAdapter(getActivity(), userId, mMessages);
-        rvChat.setAdapter(mAdapter);
-
-        // associate the LayoutManager with the RecylcerView
-        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setReverseLayout(true);
-        rvChat.setLayoutManager(linearLayoutManager);
+//        mMessages = new ArrayList<>();
+////        mFirstLoad = true;
+//        final String userId = ParseUser.getCurrentUser().getObjectId();
+//        mAdapter = new ChatAdapter(getActivity(), userId, mMessages);
+//        rvChat.setAdapter(mAdapter);
+//
+//        // associate the LayoutManager with the RecylcerView
+//        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+//        linearLayoutManager.setReverseLayout(true);
+//        rvChat.setLayoutManager(linearLayoutManager);
 
         // When send button is clicked, create message object on Parse
         btSend.setOnClickListener(new View.OnClickListener() {
@@ -218,9 +235,7 @@ public class ChatActivity extends Fragment {
                     mMessages.addAll(messages);
                     mAdapter.notifyDataSetChanged(); // update adapter
                     // Scroll to the bottom of the list on initial load
-                    if (mFirstLoad) {
-                        rvChat.scrollToPosition(0);
-                    }
+                    rvChat.scrollToPosition(0);
                 } else {
                     Log.e("message", "Error Loading Messages" + e);
                 }
